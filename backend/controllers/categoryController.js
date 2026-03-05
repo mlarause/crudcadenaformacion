@@ -75,7 +75,7 @@ exports.createCategory = async (req, res) => {
         // Error generico del servidor
         res.status(500).json({
             success: false,
-            message: 'Error al crear categoria',
+            message: 'Error al crear la categoría',
             error: error.message
         });
     }
@@ -105,7 +105,7 @@ exports.getCategories = async (req, res) => {
         data: categories
     });
 } catch (error) {
-    console.error('Error en getCategorias', error);
+    console.error('Error en getCategories:', error);
     res.status(500).json({
         success: false,
         message: 'Error al obtener categorias',
@@ -135,10 +135,10 @@ exports.getCategoryById = async (req, res) => {
         data: category
     });
 } catch (error) {
-    console.error('Error en getCategoryById', error);
+    console.error('Error en getCategoryById:', error);
     res.status(500).json({
         success: false,
-        message: 'Error al obtener categoria',
+        message: 'Error al obtener la categoria',
         error: error.message
     });    
 }
@@ -207,7 +207,7 @@ exports.updateCategory = async (req, res) => {
             data: updatedCategory
         });
     } catch (error) {
-        console.error('Error en updateCategory', error);
+        console.error('Error en updateCategory:', error);
         res.status(500).json({
             success: false,
             message: 'Error al actualizar la categoria',
@@ -261,7 +261,7 @@ exports.deleteCategory = async (req, res) => {
             // paso 3 eliminar todos los productos de lasubcategorias de esta categoria
             await Product.deleteMany({ subcategory: { $in: subIds} });
             //paso 4 eliminar todas las subcategoriasde esta categoria
-            await SubCategory.deleteMany({ category: req.params.id });
+            await Subcategory.deleteMany({ category: req.params.id });
             //paso 5 eliminar la categoria misma
             await Category.findByIdAndDelete(req.params.id);
 

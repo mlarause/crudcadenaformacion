@@ -34,7 +34,7 @@ exports.createSubcategory = async (req, res) => {
         if(!parentCategory) {
             return res.status(404).json({
                 success: false,
-                message: 'La categoria no existe',
+                message: 'la categoria no existe'
             });
         }
  
@@ -53,7 +53,7 @@ exports.createSubcategory = async (req, res) => {
             data: newSubcategory
         });
     } catch (error) {
-        console.error('Error en crear la Subcategoria:', error);
+        console.error('Error al crear la subcategoria', error);
         //manejo de error de indice unico
         if (error.message.includes('duplicate key') || error.message.includes('Ya existe')) {
             return res.status(400).json({
@@ -64,7 +64,7 @@ exports.createSubcategory = async (req, res) => {
         // Error generico del servidor
         res.status(500).json({
             success: false,
-            message: 'Error al crear subcategoria',
+            message: error.message || 'Error al crear subcategoria'
         });
     }
 };
@@ -93,10 +93,10 @@ exports.getSubcategories = async (req, res) => {
         data: subcategories
     });
 } catch (error) {
-    console.error('Error al obtener subcategorias', error);
+    console.error('Error al obtener subcategorias ', error);
     res.status(500).json({
         success: false,
-        message: 'Error al obtener subcategorias',
+        message: 'Error al obtener subcategorias'
     });    
 }
 };
@@ -123,11 +123,10 @@ exports.getSubcategoryById = async (req, res) => {
         data: subcategory
     });
 } catch (error) {
-    console.error('Error en obtener subcategorias por id', error);
+    console.error('Error al obtener subcategorias por id: ', error);
     res.status(500).json({
         success: false,
-        message: 'Error al obtener subcategorias por id',
-        
+        message: 'Error al obtener subcategorias por id'
     });    
 }
 };
@@ -191,7 +190,7 @@ exports.updateSubcategory = async (req, res) => {
         console.error('Error en actualizar subcategoria', error);
         res.status(500).json({
             success: false,
-            message: 'Error al actualizar la subcategoria',
+            message: 'Error al actualizar la subcategoria'
         });
     }
 };
@@ -253,7 +252,7 @@ exports.deleteSubcategory = async (req, res) => {
             //Desactivar todas los productos relacionados 
   
             const products = await Product.updateMany(
-                { category: req.params.id },
+                { subcategory: req.params.id },
                 { active: false } 
             );
             return res.status(200).json({

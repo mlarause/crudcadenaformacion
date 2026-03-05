@@ -83,8 +83,8 @@ const verifyTokenFn = (req, res, next) => {
         return res.status(401).json({
             success: false,
             message: 'Token inavalido o expirado',
-            error: error.message
-        })
+            error: error.name
+        });
     }
 };
 
@@ -95,10 +95,10 @@ const verifyTokenFn = (req, res, next) => {
  * si algo sale mal en su definicion lanzara un error en tiempo de carga del modulo
  */
 if (typeof verifyTokenFn !== 'function') {
-    console.error('Error: verifyTokenFn no es una funcion valida');
+    console.error('[AuthJWT] ERROR: verifyTokenFn no es una funcion');
     throw new Error('verifyTokenFn debe ser una funcion');
 }
 //exportar el middleware
 module.exports = {
-    verifyTokenFn: verifyTokenFn
+    verifyToken: verifyTokenFn
 };

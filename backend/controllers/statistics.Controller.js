@@ -38,12 +38,13 @@ const getStatistics = async (req, res) => {
             totalSubcategories
         });
     } catch (error) {
-        console.error('Error en obtener estadisticas', error);
+        console.error('Error en obtener estadisticas: ', error);
         res.status(500).json({
             success: false,
             message: 'Error al obtener estadisticas',
             error: error.message
-        })
+        });
     }
-}
+};
+
 module.exports = { getStatistics };

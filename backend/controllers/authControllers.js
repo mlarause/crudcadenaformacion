@@ -4,8 +4,8 @@
  */
 
 const User = require('../models/User');
-const bcrypt = require('bcrypt');
-const jwt =  require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const config = require('../config/auth.config');
 
 /** 
@@ -44,18 +44,18 @@ exports.signup = async (req, res) => {
         );
 
         //Preparando respuesta sin mostrar la contraseña 
-        const UserResponse = {
+        const userResponse = {
             id: savedUser._id,
             username: savedUser.username,
             email: savedUser.email,
-            role: savedUser.role,
+            role: savedUser.role
         };
 
         res.status(200).json({
             success: true,
             message: 'Usuario registrado correctamente',
             token: token,
-            user: UserResponse
+            user: userResponse
         });
     } catch (error) {
         return res.status(500).json({
@@ -140,7 +140,7 @@ exports.signin = async (req, res) => {
         );
 
         // prepara respuesta sin mostrar la contraseña
-        const UserResponse = {
+        const userResponse = {
             id: user._id,
             username: user.username,
             email: user.email,
@@ -151,7 +151,7 @@ exports.signin = async (req, res) => {
             success: true,
             message: 'Inicio de sesion exitoso',
             token: token,
-            user: UserResponse
+            user: userResponse
         });
     } catch (error) {
         return res.status(500).json({

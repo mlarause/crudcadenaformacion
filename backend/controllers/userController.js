@@ -19,7 +19,7 @@
  */
 
 const User = require('../models/User');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 /**
  * Obtener lista de usuarios 
@@ -53,10 +53,10 @@ exports.getAllUsers = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('[CONTROLLER] Error en getAllusers: ', error.message);
+        console.error('[CONTROLLER] Error en getAllUsers: ', error.message);
         res.status(500).json({
             success: false,
-            message: 'error an obtener todos los usuarios'
+            message: 'Error en obtener todos los usuarios'
         });
     }
 }; 
@@ -74,7 +74,7 @@ exports.getAllUsers = async (req, res) => {
 
 exports.getUserById = async (req, res) => {
     try {         
-        const user = await user.findById(req.params.id).select('-password');
+        const user = await User.findById(req.params.id).select('-password');
        
         if (!user) {
             return res.status(404).json({
@@ -88,15 +88,15 @@ exports.getUserById = async (req, res) => {
         if (req.userRole === 'auxiliar' && req.userId!== user.id.toString()) {
             return res.status(403).json({
                 success: false,
-                message:'no tienes permiso para ver este usuario'
+                message:'No tienes permiso para ver este usuario'
             });
         }
 
         // los coordinadores no pueden ver administradores
-        if (req.userRole === 'coordinador' && role === 'admin') {
+        if (req.userRole === 'coordinador' && user.role === 'admin') {
             return res.status(403).json({
                 success: false,
-                message:'no puedes ver usuarios admin'
+                message:'NO puedes ver usuarios admin'
             });
         }
 
@@ -107,10 +107,10 @@ exports.getUserById = async (req, res) => {
 
 
     } catch (error) {
-        console.error('Error  en getUserById', error);
+        console.error('Error en getUserById: ', error);
         res.status(500).json({
             success: false,
-            message: 'error al encontrar al usuario especifico',
+            message: 'Error al encontrar al usuario especificado',
             error: error.message
         });
     }
@@ -153,10 +153,10 @@ exports.createUser = async (req, res) => {
             }
         });
     } catch (error) {
-        cosole.error('Error en createUser', error);
+        console.error('Error en createUser: ', error);
         res.status(500).json({
             success: false,
-            message: 'error al crear usuario',
+            message: 'Error al crear usuario',
             error: error.message
         });
     }
@@ -182,7 +182,7 @@ exports.updateUser = async (req, res) => {
         if (req.userRole === 'auxiliar' && req.userId.toString() !== req.params.id) {
             return res.status(403).json({
                 success: false,
-                message: 'no tienes permiso para actualizar este usuario'
+                message: 'No tienes permiso para actualizar este usuario'
             });
         }
 
@@ -190,7 +190,7 @@ exports.updateUser = async (req, res) => {
         if (req.userRole === 'auxiliar' && req.body.role) {
             return res.status(403).json({
                 success: false,
-                message: 'no tienes permiso para modificar su rol '
+                message: 'No tienes permiso para modificar tu rol'
             });
         }
 
@@ -214,10 +214,10 @@ exports.updateUser = async (req, res) => {
             user: updatedUser
         })        
     } catch (error) {
-        console.error('Error en updateUser', error);
+        console.error('Error en updateUser: ', error);
         res.status(500).json({
             success: false,
-            message: ' Error al actualizar usuario',
+            message: 'Error al actualizar usuario',
             error: error.message
         });
     }
@@ -241,13 +241,13 @@ exports.updateUser = async (req, res) => {
 
 exports.deleteUser = async (req, res ) => {
     try {
-        const ishardDelete = req.query.hardDelete === 'true';
+        const isHardDelete = req.query.hardDelete === 'true';
         const userToDelete = await User.findById(req.params.id);
 
         if (!userToDelete) {
             return res.status(404).json({
                 success: false,
-                message: 'Usuariono encontrado'
+                message: 'Usuario no encontrado'
             });
         }
 
@@ -257,11 +257,11 @@ exports.deleteUser = async (req, res ) => {
         if (userToDelete.role === 'admin' && userToDelete._id.toString() !== req.userId.toString()) {
             return res.status(403).json({
                 success: false,
-                message: 'no tienes permiso para eliminar o desactivar administradores'
+                message: 'No tienes permiso para eliminar o desactivar otros administradores'
             });
         }
 
-        if (ishardDelete) {
+        if (isHardDelete) {
             // Eliminar permanenetemente
             await User.findByIdAndDelete(req.params.id);
             res.status(200).json({
@@ -281,7 +281,7 @@ exports.deleteUser = async (req, res ) => {
             });
         }
     } catch (error) {
-        console.error('Error en deleteUser', error);
+        console.error('Error en deleteUser: ', error);
         res.status(500).json({
             success: false,
             message: 'Error al desactivar usuario',
