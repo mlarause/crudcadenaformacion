@@ -20,15 +20,15 @@ const { checkRole } = require('../middleswares/role');
 const validateSubcategory = [
     check('name')
         .not().isEmpty()
-        .withmessage('el nombre es obliatorio'),
+        .withMessage('el nombre es obliatorio'),
 
     check('description')
         .not().isEmpty()
-        .withmessage('la descripcion es obliatorio'),
+        .withMessage('la descripcion es obliatorio'),
     
     check('category')
         .not().isEmpty()
-        .withmessage('la categoria es obliatorio'),
+        .withMessage('la categoria es obliatorio'),
 ];
 // Rutas CRUD
 
@@ -39,9 +39,12 @@ router.post('/',
     subcategoryController.createSubcategory
 );
 
-router.get('/', subcategoryController.getSubcategories);
+router.get('/',
+    verifyToken, subcategoryController.getSubcategories);
 
-router.get('/:id', subcategoryController.getSubcategoryById);
+router.get('/:id', 
+    verifyToken,
+    subcategoryController.getSubcategoryById);
 
 router.put('/:id',
     verifyToken,

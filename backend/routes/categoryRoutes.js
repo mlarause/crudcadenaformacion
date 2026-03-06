@@ -8,7 +8,7 @@
  * Get /api/categories/:id obtiene una categoria por id
  * Put /api/categories/:id actualiza una categoria por id
  * Delete /api/categories/:id elimina una categoria/desactivar
- */
+ */ 
 
 const express = require('express');
 const router = express.Router();
@@ -23,9 +23,12 @@ router.post('/',
     categoryController.createCategory
 );
 
-router.get('/', categoryController.getCategories);
+router.get('/',
+    verifyToken, categoryController.getCategories);
 
-router.get('/:id', categoryController.getCategoryById);
+router.get('/:id', 
+    verifyToken,
+    categoryController.getCategoryById);
 
 router.put('/:id',
     verifyToken,

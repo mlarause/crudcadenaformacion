@@ -3,7 +3,7 @@
  * Define endpoints parra gestion de usuarios en el sistema
  * POST /api/users
  * GET /api/users
- * GET /api/users/:id
+ * GET /xxxapi/users/:id
  * PUT /api/users/:id
  * DELETE /api/users/:id
  */

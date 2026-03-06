@@ -17,7 +17,7 @@ const config = require('./config');
  * verifica q las variables de entorno requeridas esten definidas 
  */
 
-if (!process.env.MONGO_URI) {
+if (!process.env.MONGODB_URI) {
     console.error('Error: MONGO_URI no esta definida en .env');
     process.exit(1);
 }

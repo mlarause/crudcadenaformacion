@@ -20,27 +20,27 @@ const { checkRole } = require('../middleswares/role');
 const validateProduct = [
     check('name')
         .not().isEmpty()
-        .withmessage('el nombre es obliatorio'),
+        .withMessage('el nombre es obliatorio'),
 
     check('description')
         .not().isEmpty()
-        .withmessage('la descripcion es obliatorio'),
+        .withMessage('la descripcion es obliatorio'),
 
     check('price')
         .not().isEmpty()
-        .withmessage('el precio es obliatorio'),
+        .withMessage('el precio es obliatorio'),
 
     check('stock')
         .not().isEmpty()
-        .withmessage('el stock es obliatorio'),
+        .withMessage('el stock es obliatorio'),
     
     check('category')
         .not().isEmpty()
-        .withmessage('la categoria es obliatorio'),
+        .withMessage('la categoria es obliatorio'),
 
     check('subcategory')
         .not().isEmpty()
-        .withmessage('la subcategoria es obliatorio'),
+        .withMessage('la subcategoria es obliatorio'),
 ];
 // Rutas CRUD
 
@@ -51,9 +51,13 @@ router.post('/',
     productController.createProduct
 );
 
-router.get('/', productController.getProducts);
+router.get('/', 
+        verifyToken,
+        productController.getProducts);
 
-router.get('/:id', productController.getProductById);
+router.get('/:id',
+    verifyToken,
+     productController.getProductById);
 
 router.put('/:id',
     verifyToken,
