@@ -164,13 +164,14 @@ exports.updateSubcategory = async (req, res) => {
         }
 
         //Construir onjeto de actualizacion solo con campos enviados
+        const updateData = {};
+        if (name) updateData.name = name.trim();
+        if (description) updateData.description = description.trim();
+        if (category) updateData.category = category;
+
         const updateSubcategory = await Subcategory.findByIdAndUpdate(
             req.params.id,
-            { 
-                name: name ? name.trim() : undefined,
-                description: description ? description.trim() : undefined,
-                category
-            },
+            updateData,
             {new: true, runValidators: true}
         );
 

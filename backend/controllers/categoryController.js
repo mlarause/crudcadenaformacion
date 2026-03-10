@@ -240,7 +240,7 @@ exports.updateCategory = async (req, res) => {
 
 exports.deleteCategory = async (req, res) => {
     try {
-        const SubCategory = require('../models/Subcategory');
+        const Subcategory = require('../models/Subcategory');
         const Product = require('../models/Product');
         const isHardDelete = req.query.hardDelete === 'true';
 

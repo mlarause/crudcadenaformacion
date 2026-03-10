@@ -19,7 +19,7 @@ const { checkRole } = require('../middleswares/role');
 
 router.post('/',
     verifyToken,
-    checkRole(['admin', 'coordinador']),
+    checkRole('admin', 'coordinador'),
     categoryController.createCategory
 );
 
@@ -32,7 +32,7 @@ router.get('/:id',
 
 router.put('/:id',
     verifyToken,
-    checkRole(['admin', 'coordinador']),
+    checkRole('admin', 'coordinador'),
     categoryController.updateCategory
 );
 
